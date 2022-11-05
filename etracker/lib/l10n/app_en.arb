@@ -1,6 +1,4 @@
 {
-    "helloWorld": "Hello World!",
-    "@helloWorld": {
-      "description": "The conventional newborn programmer greeting"
-    }
+    "scanQR": "Scan QR",
+    "homeScreenWouldText": "What would you like to do?"
 }
