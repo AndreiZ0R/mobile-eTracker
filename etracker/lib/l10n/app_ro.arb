@@ -6,5 +6,6 @@
     "welcomeBack": "Bine ai revenit",
     "checkReports": "Verifică Rapoarte",
     "createReport": "Creează Raport",
-    "scanQRcode": "Scanează Cod QR"
+    "scanQRcode": "Scanează Cod QR",
+    "listItems": "Afișează o listă cu toate elementele"
 }

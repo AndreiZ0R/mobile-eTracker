@@ -6,10 +6,12 @@ class AppIconButton extends StatelessWidget {
   final IconData icon;
   final Color color;
   final Color backgroundColor;
+  final bool hasElevation;
 
   const AppIconButton(
       {this.backgroundColor = Colors.white,
       this.color = Colors.black,
+      this.hasElevation = true,
       required this.icon,
       required this.onTap,
       Key? key})
@@ -22,7 +24,7 @@ class AppIconButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(
         AppDimms.defaultBorderRadius,
       ),
-      elevation: AppDimms.defaultElevation,
+      elevation: hasElevation ? AppDimms.defaultElevation : 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(
           AppDimms.defaultBorderRadius,

@@ -5,4 +5,5 @@ class AppAssets {
   static String scanQrBGless = "assets/scan_qr_noBG.png";
   static String checkReports = "assets/check_reports.jpg";
   static String createReport = "assets/create_report.jpg";
+  static String listItems = "assets/list_items.jpg";
 }

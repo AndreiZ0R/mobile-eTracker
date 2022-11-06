@@ -7,6 +7,7 @@ class AppDimms {
   static const double xsPadding = 7.0;
   static const double xxsPadding = 5.0;
 
+  static const double xlBorderRadius = 35.0;
   static const double bigBorderRadius = 25.0;
   static const double defaultBorderRadius = 15.0;
   static const double homeScreenBorderRadius = 40.0;

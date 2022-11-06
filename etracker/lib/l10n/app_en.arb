@@ -6,5 +6,6 @@
     "welcomeBack": "Welcome back",
     "checkReports": "Check reports",
     "createReport": "Create Report",
-    "scanQRcode": "Scan QR Code"
+    "scanQRcode": "Scan QR Code",
+    "listItems": "Show a list of items"
 }

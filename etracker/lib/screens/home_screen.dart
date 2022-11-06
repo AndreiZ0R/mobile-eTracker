@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:http/http.dart' as http;
 
 import 'package:etracker/constants/country_prefixes.dart';
+import 'package:etracker/screens/scan_screen.dart';
 import 'package:etracker/theming/app_assets.dart';
 import 'package:etracker/theming/app_dimms.dart';
 import 'package:etracker/widgets/AppTextButton.dart';
@@ -168,27 +171,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: DynamicSlider(
                                 items: [
                                   CarouselWrapper(
-                                    onTap: () {},
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Image.asset(
-                                          AppAssets.scanQrBGless,
-                                          fit: BoxFit.cover,
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (ctx) => const ScanScreen(),
                                         ),
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .scanQRcode,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineLarge
-                                              ?.copyWith(
-                                                color: AppTheme.secondaryColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                        ),
-                                      ],
+                                      );
+                                    },
+                                    child: _PicWithText(
+                                      label: AppLocalizations.of(context)!
+                                          .scanQRcode,
+                                      imgSrc: AppAssets.scanQrBGless,
                                     ),
                                   ),
                                   CarouselWrapper(
@@ -205,6 +198,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       label: AppLocalizations.of(context)!
                                           .createReport,
                                       imgSrc: AppAssets.createReport,
+                                    ),
+                                  ),
+                                  CarouselWrapper(
+                                    onTap: () {},
+                                    child: _PicWithText(
+                                      label: AppLocalizations.of(context)!
+                                          .listItems,
+                                      imgSrc: AppAssets.listItems,
                                     ),
                                   ),
                                 ],
@@ -344,10 +345,20 @@ class _HomeScreenHeader extends StatelessWidget {
         ),
         AppIconButton(
           icon: Icons.menu_rounded,
-          onTap: () {},
+          onTap: () async {
+            final data = await fetchItems();
+            final List<dynamic> elements = json.decode(data.body);
+            // print('${body}');
+
+            print(elements[0]);
+          },
           color: AppTheme.primaryAccent,
         ),
       ],
     );
   }
+}
+
+Future<http.Response> fetchItems() {
+  return http.get(Uri.parse('https://2877-109-97-98-41.eu.ngrok.io/items/get'));
 }
