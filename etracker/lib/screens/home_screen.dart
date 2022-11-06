@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:etracker/screens/redirect_screen.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:etracker/constants/country_prefixes.dart';
@@ -201,7 +202,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   CarouselWrapper(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (ctx) => RedirectScreen(),
+                                        ),
+                                      );
+                                    },
                                     child: _PicWithText(
                                       label: AppLocalizations.of(context)!
                                           .listItems,
@@ -279,53 +286,6 @@ class _PicWithText extends StatelessWidget {
   }
 }
 
-class _ItemList extends StatelessWidget {
-  const _ItemList({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-          itemCount: 10, //TODO FIX LATER
-          itemBuilder: (ctx, idx) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppDimms.defaultPadding,
-                vertical: AppDimms.mediumPadding,
-              ),
-              child: AppTile(
-                iconColor: AppTheme.backgroundColorWhite,
-                iconBackgroundColor: AppTheme.primaryColor,
-              ),
-            );
-          }),
-    );
-  }
-}
-
-class _WhiteBox extends StatelessWidget {
-  final Widget content;
-
-  const _WhiteBox({required this.content, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppTheme.backgroundColorWhite,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(
-            AppDimms.homeScreenBorderRadius,
-          ),
-        ),
-      ),
-      child: content,
-    );
-  }
-}
-
 class _HomeScreenHeader extends StatelessWidget {
   final User user;
 
@@ -345,20 +305,10 @@ class _HomeScreenHeader extends StatelessWidget {
         ),
         AppIconButton(
           icon: Icons.menu_rounded,
-          onTap: () async {
-            final data = await fetchItems();
-            final List<dynamic> elements = json.decode(data.body);
-            // print('${body}');
-
-            print(elements[0]);
-          },
+          onTap: () {},
           color: AppTheme.primaryAccent,
         ),
       ],
     );
   }
-}
-
-Future<http.Response> fetchItems() {
-  return http.get(Uri.parse('https://2877-109-97-98-41.eu.ngrok.io/items/get'));
 }

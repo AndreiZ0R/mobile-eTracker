@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class RestApi {
   static final RestApi _restApi = RestApi._internal();
-  final String apiLink = 'https://2877-109-97-98-41.eu.ngrok.io';
+  final String apiLink = 'https://ac65-109-97-98-41.eu.ngrok.io';
   final String itemsEndpoint = '/items/get';
 
   List<dynamic> _items = [];
@@ -43,7 +43,27 @@ class RestApi {
     return _items;
   }
 
+  Future<dynamic> getRequestedUrl(String URL) async {
+    try {
+      if (URL == '$apiLink$itemsEndpoint') {
+        return _items.isNotEmpty ? _items : getItems();
+      } else {
+        final res = await fetchItemsFromURL(URL);
+        return json.decode(res.body);
+      }
+    } catch (err) {
+      print('[API ERR] ${err}');
+      rethrow;
+    }
+  }
+
   Future<http.Response> fetchItems(String endpoint) {
     return http.get(Uri.parse('$apiLink$endpoint'));
   }
+
+  Future<http.Response> fetchItemsFromURL(String URL) {
+    return http.get(Uri.parse(URL));
+  }
+
+  String get allItems => '$apiLink$itemsEndpoint';
 }

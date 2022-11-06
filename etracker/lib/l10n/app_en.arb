@@ -7,5 +7,16 @@
     "checkReports": "Check reports",
     "createReport": "Create Report",
     "scanQRcode": "Scan QR Code",
-    "listItems": "Show a list of items"
+    "listItems": "Show a list of items",
+    "scannedItems": "Scanned Items",
+    "items": "Items",
+    "placeCameraTowardsACode": "Place your camera towards a QR Code",
+    "scannedItem": "Single Scanned Item",
+    "list": "List",
+    "id": "Id:",
+    "description": "Description:",
+    "created": "Created:",
+    "lastRevised": "Last Revised:",
+    "nextRevision": "Next revision:",
+    "location": "Location:"
 }

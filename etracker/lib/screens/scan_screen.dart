@@ -1,49 +1,29 @@
+import 'package:etracker/screens/redirect_screen.dart';
 import 'package:etracker/widgets/icon_button.dart';
+import 'package:etracker/widgets/primary_appbar.dart';
 import 'package:flutter/material.dart';
 
 import '../theming/app_dimms.dart';
 import '../theming/app_theme.dart';
 
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ScanScreen extends StatelessWidget {
+class ScanScreen extends StatefulWidget {
   const ScanScreen({Key? key}) : super(key: key);
 
   @override
+  State<ScanScreen> createState() => _ScanScreenState();
+}
+
+class _ScanScreenState extends State<ScanScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: AppIconButton(
-          hasElevation: false,
-          icon: Icons.arrow_back,
-          onTap: () {
-            Navigator.pop(context);
-          },
-          color: AppTheme.secondaryColor,
-          backgroundColor: Colors.white,
-        ),
-        elevation: 0,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Scan',
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.secondaryColor,
-                  ),
-            ),
-            Text(
-              'Place your camera towards a readable QR code',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: AppTheme.secondaryColor,
-                  ),
-            ),
-          ],
-        ),
-        backgroundColor: AppTheme.backgroundColorWhite,
-        centerTitle: true,
+      appBar: PrimaryAppBar(
+        bigLabel: AppLocalizations.of(context)!.scanQRcode,
+        hasBackButton: true,
+        smallLabel: AppLocalizations.of(context)!.placeCameraTowardsACode,
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -60,13 +40,33 @@ class ScanScreen extends StatelessWidget {
               ),
             ),
           ),
-          child: MobileScanner(
-            allowDuplicates: false,
-            onDetect: (barcode, args) {
-              if (barcode.rawValue == null) {
-                print('Failed scan');
-              }
-            },
+          child: ClipRRect(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(
+                AppDimms.xlBorderRadius,
+              ),
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                MobileScanner(
+                  allowDuplicates: false,
+                  onDetect: (barcode, args) {
+                    if (barcode.rawValue == null) {
+                    } else {
+                      UrlBookmark mark = barcode.url!;
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (ctx) => RedirectScreen(
+                            url: barcode.rawValue!,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

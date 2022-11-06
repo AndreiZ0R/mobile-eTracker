@@ -9,12 +9,16 @@ class AppTile extends StatelessWidget {
   final Color labelColor;
   final Color iconColor;
   final Color iconBackgroundColor;
+  final String placeHolder;
+  final VoidCallback? onTap;
 
   const AppTile({
+    this.onTap,
     this.backgroundColor = AppTheme.backgroundColorWhite,
     this.labelColor = AppTheme.primaryColor,
     this.iconColor = AppTheme.primaryAccent,
     this.iconBackgroundColor = AppTheme.backgroundColorWhite,
+    required this.placeHolder,
     Key? key,
     // required this.home,
   }) : super(key: key);
@@ -51,7 +55,7 @@ class AppTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'placeholder',
+                  placeHolder,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: labelColor,
                         fontWeight: FontWeight.bold,
@@ -62,7 +66,7 @@ class AppTile extends StatelessWidget {
             AppIconButton(
               backgroundColor: iconBackgroundColor,
               color: iconColor,
-              onTap: () {},
+              onTap: onTap ?? () {},
               icon: Icons.chevron_right_rounded,
             ),
           ],
