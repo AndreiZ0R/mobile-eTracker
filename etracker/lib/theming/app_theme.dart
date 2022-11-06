@@ -5,7 +5,9 @@ class AppTheme {
   static const Color primaryAccent = Color(0xFF4A8CCA);
 
   static const Color secondaryColor = Color(0xFFFF1B6B);
+
   static const Color backgroundColorWhite = Color(0xFFFFFFFF);
+  static const Color greyishBackgroundColor = Color(0xFFbcbcbc);
 
   static const String fontFamily = 'Nunito';
 

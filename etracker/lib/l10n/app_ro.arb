@@ -1,4 +1,10 @@
 {
     "scanQR": "Scaneaza cod QR",
-    "homeScreenWouldText": "Ce ați dori să faceți?"
+    "homeScreenWouldText": "Ce ați dori să faceți?",
+    "swipeLeft": "Glisează spre Stânga",
+    "unknown": "Neștiut",
+    "welcomeBack": "Bine ai revenit",
+    "checkReports": "Verifică Rapoarte",
+    "createReport": "Creează Raport",
+    "scanQRcode": "Scanează Cod QR"
 }

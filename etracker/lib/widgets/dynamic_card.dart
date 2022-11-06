@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../theming/app_dimms.dart';
+import '../theming/app_theme.dart';
 
 class DynamicSlider extends StatelessWidget {
   final List<Widget> items;
@@ -31,11 +32,13 @@ class DynamicSlider extends StatelessWidget {
           ),
           items: items
               .map(
+
                 (item) => Container(
                   margin: const EdgeInsets.all(
                     AppDimms.mediumPadding,
                   ),
                   decoration: BoxDecoration(
+                    color: AppTheme.backgroundColorWhite,
                     borderRadius: BorderRadius.circular(
                       AppDimms.defaultBorderRadius,
                     ),

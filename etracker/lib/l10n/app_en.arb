@@ -1,4 +1,10 @@
 {
     "scanQR": "Scan QR",
-    "homeScreenWouldText": "What would you like to do?"
+    "homeScreenWouldText": "What would you like to do?",
+    "swipeLeft": "Swipe Left",
+    "unknown": "Unknown",
+    "welcomeBack": "Welcome back",
+    "checkReports": "Check reports",
+    "createReport": "Create Report",
+    "scanQRcode": "Scan QR Code"
 }

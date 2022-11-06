@@ -6,7 +6,7 @@ class CountriesHelper {
   //
 
   static Future<String> getCountryById(int id) async {
-    final String res = await rootBundle.loadString('./countries.json');
+    final String res = await rootBundle.loadString('assets/countries.json');
     final data = await json.decode(res);
     List items = data['countries'];
 

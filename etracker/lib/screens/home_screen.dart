@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:etracker/constants/country_prefixes.dart';
 import 'package:etracker/theming/app_assets.dart';
 import 'package:etracker/theming/app_dimms.dart';
@@ -7,8 +9,10 @@ import 'package:etracker/widgets/app_tile.dart';
 import 'package:etracker/widgets/dynamic_card.dart';
 import 'package:etracker/widgets/icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/user_model.dart';
 import '../theming/app_theme.dart';
+import '../widgets/carousel_wrapper.dart';
 import '../widgets/user_card.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -37,170 +41,239 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppTheme.primaryColor,
-              AppTheme.secondaryColor,
-            ],
+      body: SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppTheme.primaryColor,
+                AppTheme.secondaryColor,
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(
-                AppDimms.bigPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(
+                  AppDimms.bigPadding,
+                ),
+                child: _HomeScreenHeader(user: _user),
               ),
-              child: _HomeScreenHeader(user: _user),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: AppDimms.xxlPadding),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    AppDimms.bigPadding,
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        FutureBuilder(
-                          future: infoString(),
-                          builder: (ctx, snapshot) {
-                            return snapshot.connectionState ==
-                                    ConnectionState.done
-                                ? Text(
-                                    snapshot.data!,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall
-                                        ?.copyWith(
-                                          color: AppTheme.backgroundColorWhite,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  )
-                                : const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                          },
-                        ),
-                      ],
+              Padding(
+                padding: const EdgeInsets.only(top: AppDimms.xxlPadding),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      AppDimms.bigPadding,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          FutureBuilder<String>(
+                            future: infoString(),
+                            builder: (BuildContext ctx,
+                                AsyncSnapshot<String> snapshot) {
+                              return snapshot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? Text(
+                                      '${_user.companyName}, ${_user.address}, ${AppLocalizations.of(context)!.unknown} ',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                            color:
+                                                AppTheme.backgroundColorWhite,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    )
+                                  : Text(
+                                      snapshot.data!,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                            color:
+                                                AppTheme.backgroundColorWhite,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  color: AppTheme.backgroundColorWhite,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(
-                      AppDimms.homeScreenBorderRadius,
+              Expanded(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                    color: AppTheme.backgroundColorWhite,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(
+                        AppDimms.homeScreenBorderRadius,
+                      ),
                     ),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: AppDimms.xxlPadding,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(
-                      top: AppDimms.mediumPadding,
+                      top: AppDimms.xxlPadding,
                     ),
-                    child: Column(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.homeScreenWouldText,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge
-                              ?.copyWith(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: AppDimms.mediumPadding,
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.homeScreenWouldText,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(
+                                  color: AppTheme.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          const SizedBox(height: AppDimms.mediumPadding),
+                          // _ItemList(),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppDimms.xlPadding,
                               ),
-                        ),
-                        const SizedBox(height: AppDimms.mediumPadding),
-                        // _ItemList(),
-                        Expanded(
-                          child: Padding(
+                              child: DynamicSlider(
+                                items: [
+                                  CarouselWrapper(
+                                    onTap: () {},
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Image.asset(
+                                          AppAssets.scanQrBGless,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .scanQRcode,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineLarge
+                                              ?.copyWith(
+                                                color: AppTheme.secondaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  CarouselWrapper(
+                                    onTap: () {},
+                                    child: _PicWithText(
+                                      label: AppLocalizations.of(context)!
+                                          .checkReports,
+                                      imgSrc: AppAssets.checkReports,
+                                    ),
+                                  ),
+                                  CarouselWrapper(
+                                    onTap: () {},
+                                    child: _PicWithText(
+                                      label: AppLocalizations.of(context)!
+                                          .createReport,
+                                      imgSrc: AppAssets.createReport,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: AppDimms.xlPadding,
+                              vertical: AppDimms.defaultPadding,
                             ),
-                            child: const DynamicSlider(
-                              items: [
-                                _ScanCodeWidget(),
-                                _ScanCodeWidget(),
-                                _ScanCodeWidget(),
-                                _ScanCodeWidget(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.swipeLeft,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium
+                                      ?.copyWith(
+                                        color: AppTheme.primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                const Icon(
+                                  Icons.swipe_left,
+                                  color: AppTheme.secondaryColor,
+                                )
                               ],
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppDimms.xlPadding,
-                            vertical: AppDimms.defaultPadding,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Swipe Left',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium
-                                    ?.copyWith(
-                                      color: AppTheme.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                              const Icon(
-                                Icons.swipe_left,
-                                color: AppTheme.secondaryColor,
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _ScanCodeWidget extends StatelessWidget {
-  const _ScanCodeWidget({Key? key}) : super(key: key);
+class _PicWithText extends StatelessWidget {
+  final String imgSrc;
+  final String label;
+
+  const _PicWithText({required this.imgSrc, required this.label, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppTheme.primaryColor,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(
-          AppDimms.defaultBorderRadius,
-        ),
-        child: Image.asset(
-          AppAssets.scanQrPng,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Image.asset(
+          imgSrc,
           fit: BoxFit.cover,
         ),
-      ),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                color: AppTheme.secondaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      ],
     );
   }
 }
@@ -263,9 +336,9 @@ class _HomeScreenHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Welcome back,\n${user.fullName}',
+          '${AppLocalizations.of(context)!.welcomeBack},\n${user.fullName}',
           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                color: Colors.white,
+                color: AppTheme.backgroundColorWhite,
                 fontWeight: FontWeight.bold,
               ),
         ),
