@@ -11,12 +11,13 @@
     "scannedItems": "Obiecte scanate",
     "items": "Obiecte",
     "placeCameraTowardsACode": "Îndreptați camera câtre un cod QR",
-    "scannedItem": "Singur obiect scanat",
+    "scannedItem": "Obiect scanat",
     "list": "Lista",
     "id": "Id:",
     "description": "Despre:",
     "created": "Creat:",
     "lastRevised": "Ult. revizie:",
     "nextRevision": "Urm. revizie:",
-     "location": "Locație:"
+    "location": "Locație:",
+    "days": "days"
 }
