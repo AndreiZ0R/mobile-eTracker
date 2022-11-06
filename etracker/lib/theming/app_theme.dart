@@ -5,10 +5,15 @@ class AppTheme {
   static const Color primaryAccent = Color(0xFF4A8CCA);
 
   static const Color secondaryColor = Color(0xFFFF1B6B);
-
   static const Color backgroundColorWhite = Color(0xFFFFFFFF);
 
   static const String fontFamily = 'Nunito';
+
+  static const headlineSmall = TextStyle(
+    fontSize: 13,
+    fontFamily: fontFamily,
+    color: primaryColor,
+  );
 
   static const headlineMedium = TextStyle(
     fontSize: 15,
@@ -26,6 +31,7 @@ class AppTheme {
     textTheme: const TextTheme(
       headlineMedium: headlineMedium,
       headlineLarge: headlineBig,
+      headlineSmall: headlineSmall,
     ),
   );
 }

@@ -1,8 +1,10 @@
+import 'package:etracker/constants/country_prefixes.dart';
 import 'package:etracker/theming/app_assets.dart';
 import 'package:etracker/theming/app_dimms.dart';
 import 'package:etracker/widgets/AppTextButton.dart';
 import 'package:etracker/widgets/app_card.dart';
 import 'package:etracker/widgets/app_tile.dart';
+import 'package:etracker/widgets/dynamic_card.dart';
 import 'package:etracker/widgets/icon_button.dart';
 import 'package:flutter/material.dart';
 import '../models/user_model.dart';
@@ -19,8 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String js = '{"name": "John", "email": "johnjohn@"}';
-
   final _user = const User(
     address: 'Constantin Brancusi 175-177',
     companyName: 'Q_Perior',
@@ -28,7 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
     fullName: 'Andrei Borza',
     id: 1,
     phone: 727752379,
+    active: 1,
   );
+
+  Future<String> infoString() async {
+    final res = await CountriesHelper.getCountryById(_user.countryPrefix);
+    return '${_user.companyName}, ${_user.address}, $res';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +73,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          AppLocalizations.of(context)!.homeScreenWouldText,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium
-                              ?.copyWith(
-                                color: AppTheme.backgroundColorWhite,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        FutureBuilder(
+                          future: infoString(),
+                          builder: (ctx, snapshot) {
+                            return snapshot.connectionState ==
+                                    ConnectionState.done
+                                ? Text(
+                                    snapshot.data!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall
+                                        ?.copyWith(
+                                          color: AppTheme.backgroundColorWhite,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  )
+                                : const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                          },
                         ),
                       ],
                     ),
@@ -94,17 +110,71 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context)!.homeScreenWouldText,
-                      style:
-                          Theme.of(context).textTheme.headlineLarge?.copyWith(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppDimms.xxlPadding,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: AppDimms.mediumPadding,
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.homeScreenWouldText,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineLarge
+                              ?.copyWith(
                                 color: AppTheme.primaryColor,
-                                
+                                fontWeight: FontWeight.bold,
                               ),
-                    )
-                  ],
+                        ),
+                        const SizedBox(height: AppDimms.mediumPadding),
+                        // _ItemList(),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppDimms.xlPadding,
+                            ),
+                            child: const DynamicSlider(
+                              items: [
+                                _ScanCodeWidget(),
+                                _ScanCodeWidget(),
+                                _ScanCodeWidget(),
+                                _ScanCodeWidget(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppDimms.xlPadding,
+                            vertical: AppDimms.defaultPadding,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Swipe Left',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                      color: AppTheme.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              const Icon(
+                                Icons.swipe_left,
+                                color: AppTheme.secondaryColor,
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
             )
@@ -113,18 +183,52 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
 
-  dynamic get cont => Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text('What would you like to do?'),
-          AppTextButton(
-            label: 'Scan QR',
-            onTap: () {},
-          ),
-        ],
-      );
+class _ScanCodeWidget extends StatelessWidget {
+  const _ScanCodeWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppTheme.primaryColor,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(
+          AppDimms.defaultBorderRadius,
+        ),
+        child: Image.asset(
+          AppAssets.scanQrPng,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+}
+
+class _ItemList extends StatelessWidget {
+  const _ItemList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+          itemCount: 10, //TODO FIX LATER
+          itemBuilder: (ctx, idx) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppDimms.defaultPadding,
+                vertical: AppDimms.mediumPadding,
+              ),
+              child: AppTile(
+                iconColor: AppTheme.backgroundColorWhite,
+                iconBackgroundColor: AppTheme.primaryColor,
+              ),
+            );
+          }),
+    );
+  }
 }
 
 class _WhiteBox extends StatelessWidget {

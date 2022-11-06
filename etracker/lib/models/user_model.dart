@@ -5,6 +5,7 @@ class User {
   final int phone;
   final int countryPrefix;
   final String address;
+  final int active;
 
   const User({
     required this.companyName,
@@ -13,6 +14,7 @@ class User {
     required this.address,
     required this.fullName,
     required this.id,
+    required this.active,
   });
 
   String get phoneNumber {
