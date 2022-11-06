@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class RestApi {
   static final RestApi _restApi = RestApi._internal();
-  final String apiLink = 'https://ac65-109-97-98-41.eu.ngrok.io';
+  final String apiLink = 'https://47fb-109-97-98-41.eu.ngrok.io';
   final String itemsEndpoint = '/items/get';
 
   List<dynamic> _items = [];
