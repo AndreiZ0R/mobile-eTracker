@@ -1,3 +1,22 @@
 {
-    "helloWorld": "¡Hola Mundo!"
+    "scanQR": "Scaneaza cod QR",
+    "homeScreenWouldText": "Ce ați dori să faceți?",
+    "swipeLeft": "Glisează spre Stânga",
+    "unknown": "Neștiut",
+    "welcomeBack": "Bine ai revenit",
+    "checkReports": "Verifică Rapoarte",
+    "createReport": "Creează Raport",
+    "scanQRcode": "Scanează Cod QR",
+    "listItems": "Afișează o listă cu toate elementele",
+    "scannedItems": "Obiecte scanate",
+    "items": "Obiecte",
+    "placeCameraTowardsACode": "Îndreptați camera câtre un cod QR",
+    "scannedItem": "Singur obiect scanat",
+    "list": "Lista",
+    "id": "Id:",
+    "description": "Despre:",
+    "created": "Creat:",
+    "lastRevised": "Ult. revizie:",
+    "nextRevision": "Urm. revizie:",
+     "location": "Locație:"
 }

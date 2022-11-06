@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'theming/app_theme.dart';
+import './screens/home_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -13,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -23,25 +27,8 @@ class MyApp extends StatelessWidget {
         Locale('en', ''), // English, no country code
         Locale('ro', ''), // Spanish, no country code
       ],
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Center(
-          child: Text(AppLocalizations.of(context)!.helloWorld),
-        ),
-      ),
+      theme: AppTheme.themeData,
+      home: const HomeScreen(),
     );
   }
 }
